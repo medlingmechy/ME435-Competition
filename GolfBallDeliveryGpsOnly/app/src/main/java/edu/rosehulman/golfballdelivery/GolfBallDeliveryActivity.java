@@ -15,7 +15,11 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class GolfBallDeliveryActivity extends Activity {
+import edu.rosehulman.me435.AccessoryActivity;
+import edu.rosehulman.me435.FieldGpsListener;
+import edu.rosehulman.me435.FieldOrientationListener;
+
+public class GolfBallDeliveryActivity extends AccessoryActivity implements FieldOrientationListener,FieldGpsListener{
 
 	/** Constant used with logging that you'll see later. */
 	public static final String TAG = "GolfBallDelivery";
@@ -339,8 +343,7 @@ public class GolfBallDeliveryActivity extends Activity {
     }
 
     public void handleSetXAxis(View view) {
-        Toast.makeText(this, "TODO: Implement handleSetXAxis", Toast.LENGTH_SHORT).show();
-    }
+        Toast.makeText(this, "TODO: Implement handleSetXAxis", Toast.LENGTH_SHORT).show(); }
 
     public void handleZeroHeading(View view) {
         Toast.makeText(this, "TODO: Implement handleZeroHeading", Toast.LENGTH_SHORT).show();
@@ -349,4 +352,6 @@ public class GolfBallDeliveryActivity extends Activity {
     public void handleGoOrMissionComplete(View view) {
         Toast.makeText(this, "TODO: Implement handleGoOrMissionComplete", Toast.LENGTH_SHORT).show();
     }
+
+
 }
