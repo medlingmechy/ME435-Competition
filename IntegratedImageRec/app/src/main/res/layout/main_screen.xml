@@ -91,16 +91,16 @@
                 android:src="@drawable/none_ball" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/go_or_mission_complete_button"
-            style="@style/ColorButton"
-            android:layout_width="match_parent"
-            android:layout_height="100sp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/green_button"
-            android:onClick="handleGoOrMissionComplete"
-            android:text="Go!"
-            android:textSize="36sp" />
+    <Button
+        android:id="@+id/go_or_mission_complete_button"
+        style="@style/ColorButton"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/green_button"
+        android:onClick="handleGoOrMissionComplete"
+        android:text="Go!"
+        android:textSize="36sp" />
 
         <TextView
             android:id="@+id/state_label"

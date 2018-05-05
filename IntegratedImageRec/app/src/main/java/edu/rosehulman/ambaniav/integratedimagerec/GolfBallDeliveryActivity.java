@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import edu.rosehulman.me435.NavUtils;
 import edu.rosehulman.me435.RobotActivity;
@@ -25,7 +27,11 @@ GolfBallDeliveryActivity extends RobotActivity {
   /**
    * Constant used with logging that you'll see later.
    */
+
+
   public static final String TAG = "GolfBallDelivery";
+  private TextView mJumboXTextView, mJumboYTextView;
+  protected ViewFlipper mViewFlipper;
 
   public enum State {
     READY_FOR_MISSION,
@@ -66,6 +72,7 @@ GolfBallDeliveryActivity extends RobotActivity {
    * References to the buttons on the UI that can change color.
    */
   private Button mTeamChangeButton, mGoOrMissionCompleteButton;
+  private Button mGoOrMissionCompleteButton_JUMBO;
 
   /**
    * An array constants (of size 7) that keeps a reference to the different ball color images resources.
@@ -80,6 +87,7 @@ GolfBallDeliveryActivity extends RobotActivity {
   private TextView mCurrentStateTextView, mStateTimeTextView, mGpsInfoTextView, mSensorOrientationTextView,
       mGuessXYTextView, mLeftDutyCycleTextView, mRightDutyCycleTextView, mMatchTimeTextView;
 
+  protected LinearLayout mJumbo_linear_layout;
   // ---------------------- End of UI References ----------------------
 
 
@@ -151,7 +159,8 @@ GolfBallDeliveryActivity extends RobotActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-//    setContentView(R.layout.activity_golf_ball_delivery);
+    //The top most activity that uses views should load this line
+    setContentView(R.layout.activity_main);
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     mBallImageButtons = new ImageButton[]{(ImageButton) findViewById(R.id.location_1_image_button),
         (ImageButton) findViewById(R.id.location_2_image_button),
@@ -166,6 +175,13 @@ GolfBallDeliveryActivity extends RobotActivity {
     mRightDutyCycleTextView = (TextView) findViewById(R.id.right_duty_cycle_textview);
     mMatchTimeTextView = (TextView) findViewById(R.id.match_time_textview);
     mGoOrMissionCompleteButton = (Button) findViewById(R.id.go_or_mission_complete_button);
+    mGoOrMissionCompleteButton_JUMBO = (Button) findViewById(R.id.go_or_mission_complete_button2);
+
+    mJumboXTextView = (TextView) findViewById(R.id.jumbo_x);
+    mJumboYTextView = (TextView) findViewById(R.id.jumbo_y);
+    mViewFlipper = findViewById(R.id.View_Flipper);
+
+      mJumbo_linear_layout = findViewById(R.id.Jumbo_linear_layout);
 
     // When you start using the real hardware you don't need test buttons.
     boolean hideFakeGpsButtons = false;
@@ -198,6 +214,7 @@ GolfBallDeliveryActivity extends RobotActivity {
         mGpsInfoTextView.setText("---");
         mGuessXYTextView.setText("---");
         mScripts.nearBallScript();
+        mViewFlipper.setDisplayedChild(1);
         break;
       case DRIVE_TOWARDS_FAR_BALL:
         // Nothing here. All the work happens in the loop function.
@@ -254,6 +271,12 @@ GolfBallDeliveryActivity extends RobotActivity {
     //Log.d(TAG, "This is loop within our subclass of Robot Activity");
     mStateTimeTextView.setText("" + getStateTimeMs() / 1000);
     mGuessXYTextView.setText("(" + (int) mGuessX + ", " + (int) mGuessY + ")");
+
+//    mJumboXTextView.setText(""+(int) mCurrentGpsX);
+//    mJumboYTextView.setText(""+(int) mCurrentGpsX);
+
+    mJumboXTextView.setText(""+(int) mGuessX);
+    mJumboYTextView.setText(""+(int) mGuessY);
 
     long timeRemainingSeconds = MATCH_LENGTH_MS / 1000;
     if (mState != State.READY_FOR_MISSION) {
@@ -548,6 +571,23 @@ GolfBallDeliveryActivity extends RobotActivity {
       setState(State.READY_FOR_MISSION);
     }
   }
+
+   public void handleGoJumbo(View view){
+       if (mState == State.READY_FOR_MISSION) {
+           // This is the moment in time, when the match starts!
+           mMatchStartTime = System.currentTimeMillis();
+           updateMissionStrategyVariables();
+           mGoOrMissionCompleteButton_JUMBO.setText("Stop");
+           mGoOrMissionCompleteButton_JUMBO.setBackgroundResource(R.drawable.red_button);
+           setState(State.NEAR_BALL_SCRIPT);
+       } else if (mState == State.NEAR_BALL_SCRIPT){
+
+       }
+
+       else {
+           setState(State.READY_FOR_MISSION);
+       }
+   }
 
   private void updateMissionStrategyVariables() {
     // Goal is to set these values
