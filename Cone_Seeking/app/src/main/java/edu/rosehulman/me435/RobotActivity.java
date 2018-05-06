@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -121,7 +122,7 @@ public class RobotActivity extends AccessoryActivity implements FieldGpsListener
   protected Timer mTimer;
 
   /** Interval that sets how often the loop function is called. */
-  public static final int LOOP_INTERVAL_MS = 100;
+  public static final int LOOP_INTERVAL_MS = 4000;
 
   /** Magic tool we use to execute code after a delay. */
   protected Handler mCommandHandler = new Handler();
@@ -180,6 +181,7 @@ public class RobotActivity extends AccessoryActivity implements FieldGpsListener
   @Override
   public void onLocationChanged(double x, double y, double heading,
       Location location) {
+    Toast.makeText(this,"Robot GPS",Toast.LENGTH_SHORT).show();
     mGpsCounter++;
     mCurrentGpsX = x;
     mCurrentGpsY = y;
@@ -187,7 +189,7 @@ public class RobotActivity extends AccessoryActivity implements FieldGpsListener
     mGuessX = mCurrentGpsX;
     mGuessY = mCurrentGpsY;
 
-    mCurrentGpsDistance = NavUtils.getDistance(mCurrentGpsX, mCurrentGpsY, 0, 0); // TODO: Update this code to allow for targets other than 0, 0
+    mCurrentGpsDistance = NavUtils.getDistance(mCurrentGpsX, mCurrentGpsY, 90, 0); // TODO: Update this code to allow for targets other than 0, 0
     int lastGpsReadingIndex = mSavedGpsDistances.size() - 1;
     double oldGpsDistance = lastGpsReadingIndex < 0 ? 1000 : mSavedGpsDistances.get(lastGpsReadingIndex);
     if (mCurrentGpsDistance > oldGpsDistance) {
@@ -274,7 +276,7 @@ public class RobotActivity extends AccessoryActivity implements FieldGpsListener
       }
     }, 0, LOOP_INTERVAL_MS);
     mFieldOrientation.registerListener(this);
-    mFieldGps.requestLocationUpdates(this, 1000, 0);
+    mFieldGps.requestLocationUpdates(this, 500, 0);
   }
 
   @Override
