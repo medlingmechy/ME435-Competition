@@ -124,7 +124,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="___ " />
+                    android:text="___ "
+                    android:textSize="24dp"/>
 
                 <TextView
                     android:id="@+id/GpsInfo_TextView"
@@ -158,7 +159,15 @@
                     android:id="@+id/TargetXY_TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="___ " />
+                    android:text="___ "
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/Distance_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="___ "
+                    android:textSize="25dp"/>
             </TableRow>
 
             <TableRow
@@ -332,12 +341,12 @@
 
                 <Button
                     android:id="@+id/Next"
-                    android:layout_width="500dp"
-                    android:layout_height="300dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="handleNext"
                     android:text="Next"
-                    android:textSize="150dp"/>
+                    android:textSize="75dp"/>
             </LinearLayout>
 
         </LinearLayout>

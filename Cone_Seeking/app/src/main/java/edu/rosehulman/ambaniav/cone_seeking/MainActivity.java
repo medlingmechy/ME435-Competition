@@ -27,10 +27,10 @@ public class MainActivity extends RobotActivity implements FieldGpsListener, Fie
     private TextView mHighLevelState_TextView, mMission_TextView, mGPSTextView, mGpsInfoTextView, mTargetxyTextview;
     private TextView mTurnamountTextView, mCommandTextView, mTargetHeadingTextView;
     private TextView mBlueBallTextView, mRedBallTextView, mWhiteBallTextView;
+    private TextView mDistanceTextView;
     private long mStateStartTime;
     private Timer mTimer;
-    private static final int LOOP_INTERVAL_MS = 4000;
-    private double mTargetX, mTargetY;
+    private static final int LOOP_INTERVAL_MS = 100;
     private int mTargetHeading;
     private double mTurnAmount;
     private String mCommand;
@@ -40,7 +40,7 @@ public class MainActivity extends RobotActivity implements FieldGpsListener, Fie
     private TextView mKeepGoingTextView;
     private boolean keepGoing = false;
 
-//    private FieldGps mFieldGps;
+    //    private FieldGps mFieldGps;
 //    private FieldOrientation mFieldOrientation;
     private boolean mSetFieldOrientationWithGpsHeading = false;
 
@@ -58,7 +58,6 @@ public class MainActivity extends RobotActivity implements FieldGpsListener, Fie
      */
     private double mNearBallGpsY = 50;
     private double mFarBallGpsY;
-
 
 
     // NavUtils
@@ -114,6 +113,7 @@ public class MainActivity extends RobotActivity implements FieldGpsListener, Fie
         mCommandTextView = findViewById(R.id.Command_TextView);
         mSensorOrientationTextView = findViewById(R.id.SensorOrientation_TextView);
 
+        mDistanceTextView = findViewById(R.id.Distance_TextView);
         mKeepGoingTextView = findViewById(R.id.KeepGoing_TextView);
         mGpsInfoTextView = findViewById(R.id.GPS_TextView);
         mGpsCounter = 0;
@@ -128,47 +128,63 @@ public class MainActivity extends RobotActivity implements FieldGpsListener, Fie
     public void loop() {
         super.loop();
 
-        sendWheelSpeed(0,0);
         //Update the UI to show the time in the current state.
 
-                    //mStateTimeTextView.setText("" + getmStateTimeMs() / 1000.0);
-                    if (mState.equals(State.READY_FOR_MISSION) == false) { //if not Ready
-                        mHighLevelState_TextView.setText(mState.toString() + " " + getmStateTimeMs() / 1000);
-                    }
+        mDistanceTextView.setText("Dist Target: " + (int) (mCurrentGpsDistance));
+        //mStateTimeTextView.setText("" + getmStateTimeMs() / 1000.0);
+        if (mState.equals(State.READY_FOR_MISSION) == false) { //if not Ready
+            mHighLevelState_TextView.setText(mState.toString() + " " + getmStateTimeMs() / 1000);
+        }
 
 
-                    if (keepGoing == true) {
-                        switch (mState) {
-                            case READY_FOR_MISSION:
-                                sendWheelSpeed(0, 0);
-                                break;
-                            case INITIAL_STRAIGHT:
-                                sendWheelSpeed(150, 150);
-                                if (getmStateTimeMs() > 10000) {
-                                    setState(State.GPS_SEEKING);
-                                }
-                                break;
-                            case GPS_SEEKING:
-                                seekTargetAt(90, 0);
-                                break;
-                            case BALL_REMOVAL_SCRIPT:
-                                sendWheelSpeed(0, 0);
-                                break;
-                            case DRIVE_TOWARDS_NEAR_BALL:
-                                break;
-                            default:
-                                //Catch for others
-                                break;
-                        }
+        if (keepGoing == true) {
+            switch (mState) {
+                case READY_FOR_MISSION:
+                    sendWheelSpeed(0, 0);
+                    break;
+                case INITIAL_STRAIGHT:
+                    sendWheelSpeed(150, 150);
+                    if (getmStateTimeMs() > 10000) {
+                        setState(State.GPS_SEEKING);
+                        keepGoing = false;
+                        mFieldGps.setCurrentLocationAsLocationOnXAxis();
                     }
-        keepGoing = false;
-        mKeepGoingTextView.setText(" "+ keepGoing);
+                    break;
+                case GPS_SEEKING:
+                    if (mCurrentGpsDistance > 20) {
+                        seekTargetAt(mTargetX, mTargetY);
+                    } else {
+                        setState(State.BALL_REMOVAL_SCRIPT);
+                        sendWheelSpeed(0,0);
+                    }
+                    if (getmStateTimeMs() > 30000) {
+                        keepGoing = false;
+                        sendWheelSpeed(0, 0);
+                        setState(State.GPS_SEEKING);
+                    }
+                    break;
+                case BALL_REMOVAL_SCRIPT:
+                    Toast.makeText(this,"Reached Ball Removal",Toast.LENGTH_SHORT).show();
+                    sendWheelSpeed(0, 0);
+                    break;
+                case DRIVE_TOWARDS_NEAR_BALL:
+                    break;
+                default:
+                    //Catch for others
+                    break;
+            }
+        }
+        else{
+            sendWheelSpeed(0,0);
+        }
+
+        mKeepGoingTextView.setText(" " + keepGoing);
     }
 
     public void handleNext(View view) {
-        Toast.makeText(this,"Next ",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Next ", Toast.LENGTH_SHORT).show();
         keepGoing = true;
-        mKeepGoingTextView.setText(" "+ keepGoing);
+        mKeepGoingTextView.setText(" " + keepGoing);
     }
 
     public enum State {
@@ -191,10 +207,11 @@ public class MainActivity extends RobotActivity implements FieldGpsListener, Fie
                 break;
             case GPS_SEEKING:
                 Script_GPSseeking();
-                setTargets(90, 0);
+                setTargets(90, 50);
                 break;
             case BALL_REMOVAL_SCRIPT:
                 Ball_Script1();
+
                 break;
             case DRIVE_TOWARDS_NEAR_BALL:
 
@@ -278,7 +295,7 @@ public class MainActivity extends RobotActivity implements FieldGpsListener, Fie
     @Override
     public void onLocationChanged(double x, double y, double heading, Location location) {
         super.onLocationChanged(x, y, heading, location);
-        Toast.makeText(this,"Got GPS",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Got GPS", Toast.LENGTH_SHORT).show();
         String gpsInfo = getString(R.string.xy_format, mCurrentGpsX, mCurrentGpsY);
         if (mCurrentGpsHeading != NO_HEADING) {
             gpsInfo += " " + getString(R.string.degrees_format, mCurrentGpsHeading);
@@ -310,27 +327,27 @@ public class MainActivity extends RobotActivity implements FieldGpsListener, Fie
         mSensorOrientationTextView.setText(getString(R.string.degrees_format, mCurrentSensorHeading));
     }
 
-    private void AllNavUtilScripts() {
-
-        mTargetHeading = (int) (Math.round(NavUtils.getTargetHeading(mCurrentGpsX, mCurrentGpsY, mTargetX, mTargetY)));
-        mTargetHeadingTextView.setText(" " + mTargetHeading);
-
-
-        if (NavUtils.targetIsOnLeft(mCurrentGpsX, mCurrentGpsY, mCurrentSensorHeading, mTargetX, mTargetY)) {
-            int left_delta = (int) Math.round(NavUtils.getLeftTurnHeadingDelta(mCurrentSensorHeading, mTargetHeading));
-            mTurnamountTextView.setText("Left " + left_delta + "º");
-            int num = (255 - left_delta);
-            mCommand = "WHEEL SPEED FORWARD " + (num) + " FORWARD " + (255);
-            sendWheelSpeed(num,255);
-        } else {
-            int right_delta = (int) Math.round(NavUtils.getRightTurnHeadingDelta(mCurrentSensorHeading, mTargetHeading));
-            mTurnamountTextView.setText("Right " + right_delta + "º");
-            int num = (255 - right_delta);
-            mCommand = "WHEEL SPEED FORWARD " + 255 + " FORWARD " + num;
-            sendWheelSpeed(255,num);
-        }
-        mCommandTextView.setText(mCommand);
-    }
+//    private void AllNavUtilScripts() {
+//
+//        mTargetHeading = (int) (Math.round(NavUtils.getTargetHeading(mCurrentGpsX, mCurrentGpsY, mTargetX, mTargetY)));
+//        mTargetHeadingTextView.setText(" " + mTargetHeading);
+//
+//
+//        if (NavUtils.targetIsOnLeft(mCurrentGpsX, mCurrentGpsY, mCurrentSensorHeading, mTargetX, mTargetY)) {
+//            int left_delta = (int) Math.round(NavUtils.getLeftTurnHeadingDelta(mCurrentSensorHeading, mTargetHeading));
+//            mTurnamountTextView.setText("Left " + left_delta + "º");
+//            int num = (255 - left_delta);
+//            mCommand = "WHEEL SPEED FORWARD " + (num) + " FORWARD " + (255);
+//            sendWheelSpeed(num, 255);
+//        } else {
+//            int right_delta = (int) Math.round(NavUtils.getRightTurnHeadingDelta(mCurrentSensorHeading, mTargetHeading));
+//            mTurnamountTextView.setText("Right " + right_delta + "º");
+//            int num = (255 - right_delta);
+//            mCommand = "WHEEL SPEED FORWARD " + 255 + " FORWARD " + num;
+//            sendWheelSpeed(255, num);
+//        }
+//        mCommandTextView.setText(mCommand);
+//    }
 
 
     public void handleReset(View view) {
@@ -350,7 +367,7 @@ public class MainActivity extends RobotActivity implements FieldGpsListener, Fie
 //        Toast.makeText(this, "Go", Toast.LENGTH_SHORT).show();
         if (mState == State.READY_FOR_MISSION) {
             setState(State.INITIAL_STRAIGHT);
-            mTargetxyTextview.setText("("+mTargetX+","+ mTargetY+")");
+            mTargetxyTextview.setText("(" + mTargetX + "," + mTargetY + ")");
         }
 
 
@@ -418,23 +435,24 @@ public class MainActivity extends RobotActivity implements FieldGpsListener, Fie
     }
 
     private void seekTargetAt(double xTarget, double yTarget) {
-        Toast.makeText(this,"Seeking",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Seeking", Toast.LENGTH_SHORT).show();
         int leftDutyCycle = LEFT_PWM_VALUE_FOR_STRAIGHT;
         int rightDutyCycle = RIGHT_PWM_VALUE_FOR_STRAIGHT;
         double targetHeading = NavUtils.getTargetHeading(mCurrentGpsX, mCurrentGpsY, xTarget, yTarget);
         double leftTurnAmount = NavUtils.getLeftTurnHeadingDelta(mCurrentSensorHeading, targetHeading);
         double rightTurnAmount = NavUtils.getRightTurnHeadingDelta(mCurrentSensorHeading, targetHeading);
         if (leftTurnAmount < rightTurnAmount) {
-            leftDutyCycle = LEFT_PWM_VALUE_FOR_STRAIGHT - (int) (leftTurnAmount *SEEKING_DUTY_CYCLE_PER_ANGLE_OFF_MULTIPLIER) ; // Using a VERY simple plan. :)
+            leftDutyCycle = LEFT_PWM_VALUE_FOR_STRAIGHT - (int) (leftTurnAmount); // Using a VERY simple plan. :)
             leftDutyCycle = Math.max(leftDutyCycle, LOWEST_DESIRABLE_DUTY_CYCLE);
         } else {
-            rightDutyCycle = RIGHT_PWM_VALUE_FOR_STRAIGHT - (int) (rightTurnAmount*SEEKING_DUTY_CYCLE_PER_ANGLE_OFF_MULTIPLIER); // Could also scale it.
+            rightDutyCycle = RIGHT_PWM_VALUE_FOR_STRAIGHT - (int) (rightTurnAmount); // Could also scale it.
             rightDutyCycle = Math.max(rightDutyCycle, LOWEST_DESIRABLE_DUTY_CYCLE);
         }
 
-        mCommand ="WHEEL SPEED FORWARD " + leftDutyCycle + " FORWARD " + rightDutyCycle;
+        mCommand = "WHEEL SPEED FORWARD " + leftDutyCycle + " FORWARD " + rightDutyCycle;
         mCommandTextView.setText(mCommand);
         sendWheelSpeed((int) leftDutyCycle, (int) rightDutyCycle);
+        mTargetHeadingTextView.setText(" " + (int) (targetHeading));
     }
 
     private void updateMissionStrategyVariables() {
@@ -466,7 +484,11 @@ public class MainActivity extends RobotActivity implements FieldGpsListener, Fie
 
 
     // ---------------------------- Driving area ---------------------------------
-    private void Ball_Script1 (){
+    private void Ball_Script1() {
+
+        String command = getString(R.string.position_command, 0, 90, 0, -90, 90);
+        sendCommand("ATTACH 111111");
+        sendCommand(command);
         mCommandHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -504,7 +526,8 @@ public class MainActivity extends RobotActivity implements FieldGpsListener, Fie
         }, 4500);
 
     }
-    private void Ball_Script2 (){
+
+    private void Ball_Script2() {
         mCommandHandler.postDelayed(new Runnable() {
             @Override
             public void run() {

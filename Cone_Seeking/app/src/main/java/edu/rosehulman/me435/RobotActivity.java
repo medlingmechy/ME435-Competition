@@ -65,7 +65,7 @@ public class RobotActivity extends AccessoryActivity implements FieldGpsListener
    * is sometimes useful as a backup plan. */
   protected double mCurrentCalculatedGpsHeading;
 
-  /** Current distance of the GPS reading to 0, 0. */
+  /** Current distance of the GPS reading to xTarget, yTarget. */
   protected double mCurrentGpsDistance;
 
   /** Array that holds every GPS X value ever read. */
@@ -88,7 +88,7 @@ public class RobotActivity extends AccessoryActivity implements FieldGpsListener
   protected int mGettingFartherAwayCounter = 0;
 
   /** When testing you can speak all GPS readings. Set to false to turn off. */
-  protected boolean mTalkingGps = false;
+  protected boolean mTalkingGps = true;
   
   /** Tracks when the TalkingGps last spoke to avoid cutting off debugging info. */
   protected long mLastTalkTime = 0;
@@ -122,10 +122,14 @@ public class RobotActivity extends AccessoryActivity implements FieldGpsListener
   protected Timer mTimer;
 
   /** Interval that sets how often the loop function is called. */
-  public static final int LOOP_INTERVAL_MS = 4000;
+  public static final int LOOP_INTERVAL_MS = 500;
 
   /** Magic tool we use to execute code after a delay. */
   protected Handler mCommandHandler = new Handler();
+
+
+  /** Give Robot Activity Acc   ess to targets in the onLocation unction   */
+  protected  int mTargetX = 0, mTargetY = 0;
 
   // Field GPS locations
   /** Latitude and Longitude values of the field home bases. */
@@ -189,7 +193,7 @@ public class RobotActivity extends AccessoryActivity implements FieldGpsListener
     mGuessX = mCurrentGpsX;
     mGuessY = mCurrentGpsY;
 
-    mCurrentGpsDistance = NavUtils.getDistance(mCurrentGpsX, mCurrentGpsY, 90, 0); // TODO: Update this code to allow for targets other than 0, 0
+    mCurrentGpsDistance = NavUtils.getDistance(mCurrentGpsX, mCurrentGpsY, mTargetX, mTargetY); // DONE: Update this code to allow for targets other than 0, 0
     int lastGpsReadingIndex = mSavedGpsDistances.size() - 1;
     double oldGpsDistance = lastGpsReadingIndex < 0 ? 1000 : mSavedGpsDistances.get(lastGpsReadingIndex);
     if (mCurrentGpsDistance > oldGpsDistance) {
