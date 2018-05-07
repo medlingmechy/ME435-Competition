@@ -275,6 +275,13 @@ public class GolfBallDeliveryActivity extends ImageRecActivity {
         mJumboXTextView.setText("" + (int)mGuessX);
         mJumboYTextView.setText("" + (int)mGuessY);
 
+        //TODO: look at iphone picture
+        if (mConeFound) {
+            mJumbotronLinearLayout.setBackgroundColor(Color.parseColor("#ff80000"));
+        } else {
+            mJumbotronLinearLayout.setBackgroundColor(Color.LTGRAY);
+        }
+
         long timeRemainingSeconds = MATCH_LENGTH_MS / 1000;
         if (mState != State.READY_FOR_MISSION) {
             timeRemainingSeconds = (MATCH_LENGTH_MS - getMatchTimeMs()) / 1000;
@@ -285,6 +292,14 @@ public class GolfBallDeliveryActivity extends ImageRecActivity {
         mMatchTimeTextView.setText(getString(R.string.time_format,
                 timeRemainingSeconds / 60, timeRemainingSeconds % 60));
 
+        if(mConeFound){
+            if(mConeLeftRightLocation<0){
+                Log.d(TAG,"Turn Left Some.");
+            }
+            if (mConeSize>0.1){
+                Log.d(TAG,"Turn Left Some.");
+            }
+        }
         switch (mState) {
             case READY_FOR_MISSION:
                 break;
