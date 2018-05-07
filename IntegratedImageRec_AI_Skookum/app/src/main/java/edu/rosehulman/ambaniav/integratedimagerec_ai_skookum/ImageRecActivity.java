@@ -23,7 +23,8 @@ import org.opencv.imgproc.Moments;
 
 import java.util.List;
 
-import edu.rosehulman.me435.RobotActivity;
+
+import me435.RobotActivity;
 
 public class ImageRecActivity extends RobotActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
 

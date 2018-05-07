@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import edu.rosehulman.me435.NavUtils;
+import me435.NavUtils;
 
 public class GolfBallDeliveryActivity extends ImageRecActivity {
 

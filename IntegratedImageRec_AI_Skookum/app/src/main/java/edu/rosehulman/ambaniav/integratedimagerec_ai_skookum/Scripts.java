@@ -3,8 +3,8 @@ package edu.rosehulman.ambaniav.integratedimagerec_ai_skookum;
 import android.os.Handler;
 import android.widget.Toast;
 
-import edu.rosehulman.me435.NavUtils;
-import edu.rosehulman.me435.RobotActivity;
+import me435.NavUtils;
+import me435.RobotActivity;
 
 public class Scripts {
 

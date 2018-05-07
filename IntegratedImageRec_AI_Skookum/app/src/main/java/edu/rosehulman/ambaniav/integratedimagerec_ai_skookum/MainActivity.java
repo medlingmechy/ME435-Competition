@@ -17,8 +17,6 @@ public class MainActivity extends GolfBallDeliveryActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
     }
 
     @Override
