@@ -1,10 +1,20 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\ambaniav\\Documents\\GitHub\\ME435-Competition\\GolfBallDeliveryGpsOnly\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v16\\values-v16.xml",
+            "outputFile": "/Users/fisherds/Documents/Rose/ME435/github/ME435Competition-S18/GolfBallDeliveryGpsOnly/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ambaniav\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.0.0.aar\\8c6afeaba2c6237e5c2f1517c7a4a629\\res\\values-v16\\values-v16.xml",
+                    "source": "/Users/fisherds/.gradle/caches/transforms-1/files-1.1/support-compat-26.0.0.aar/e2694d42cdb041a64e20e16b4c0434d5/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                },
+                {
+                    "source": "/Users/fisherds/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.0.0.aar/33c9a87cd200f5ba2542a7728447a4ec/res/values-v16/values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -20,16 +30,6 @@
                         "endLines": "6",
                         "endColumns": "12",
                         "endOffsets": "289"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\ambaniav\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.0.0.aar\\acbd39e54e04718fc28ab3146ada2155\\res\\values-v16\\values-v16.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "65",
-                        "endOffsets": "116"
                     }
                 }
             ]

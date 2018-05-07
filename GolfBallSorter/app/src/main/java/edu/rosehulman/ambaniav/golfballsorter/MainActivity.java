@@ -1,13 +1,11 @@
 package edu.rosehulman.ambaniav.golfballsorter;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.rosehulman.me435.AccessoryActivity;
-import edu.rosehulman.me435.RobotActivity;
 
 import static edu.rosehulman.ambaniav.golfballsorter.R.*;
 
@@ -20,7 +18,7 @@ public class MainActivity extends AccessoryActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layout.activity_main);
+        setContentView(layout.golf_ball_detection);
         mBall1TextView = findViewById(id.Ball1_TextView);
         mBall2TextView = findViewById(id.Ball2_TextView);
         mBall3TextView = findViewById(id.Ball3_TextView);

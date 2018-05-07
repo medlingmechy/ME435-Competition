@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/Jumbo_linear_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
+              android:id="@+id/jumbo_linear_layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/jumbo_x"
@@ -12,29 +11,29 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="GPS X "
-        android:textSize="96dp" />
+        android:text="GPS X"
+        android:textSize="96sp"/>
 
     <Button
-        android:id="@+id/go_or_mission_complete_button2"
+        android:id="@+id/jumbo_go_or_mission_complete_button"
         style="@style/ColorButton"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
         android:layout_weight="1"
         android:background="@drawable/green_button"
-        android:onClick="handleGoJumbo"
+        android:onClick="handleGoOrMissionComplete"
         android:text="Go!"
-        android:textSize="120sp" />
+        android:textSize="100sp"/>
 
     <TextView
         android:id="@+id/jumbo_y"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="center"
         android:layout_weight="1"
         android:gravity="center"
         android:text="GPS Y"
-        android:textSize="96dp" />
+        android:textSize="96sp"/>
 
 </LinearLayout>

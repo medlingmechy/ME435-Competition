@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,32 +10,16 @@
     tools:showIn="@layout/activity_main">
 
     <ViewFlipper
-        android:id="@+id/View_Flipper"
+        android:id="@+id/my_view_flipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/main_screen"></include>
+        <include layout="@layout/main_screen" />
 
-        <include layout="@layout/jumbotron"></include>
+        <include layout="@layout/image_rec_params" />
 
+        <include layout="@layout/jumbotron" />
 
-        <include layout="@layout/image_rec_params"></include>
-
-        <!--<TextView-->
-            <!--android:id="@+id/my_view_flipper"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Hello World!" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="This is View 2" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="View 3" />-->
     </ViewFlipper>
 
 </RelativeLayout>

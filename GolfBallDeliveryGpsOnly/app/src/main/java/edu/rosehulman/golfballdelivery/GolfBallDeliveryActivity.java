@@ -47,7 +47,7 @@ public class GolfBallDeliveryActivity extends RobotActivity {
   /**
    * An array (of size 3) that stores what color is present in each golf ball stand location.
    */
-  public Ba1llColor[] mLocationColors = new BallColor[]{BallColor.NONE, BallColor.NONE, BallColor.NONE};
+  public BallColor[] mLocationColors = new BallColor[]{BallColor.NONE, BallColor.NONE, BallColor.NONE};
 
   /**
    * Simple boolean that is updated when the Team button is pressed to switch teams.

@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\ambaniav\\Documents\\GitHub\\ME435-Competition\\GolfBallDeliveryGpsOnly\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-normal-v4\\values-normal-v4.xml",
+            "outputFile": "/Users/fisherds/Documents/Rose/ME435/github/ME435Competition-S18/GolfBallDeliveryGpsOnly/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-normal-v4/values-normal-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ambaniav\\Documents\\GitHub\\ME435-Competition\\GolfBallDeliveryGpsOnly\\app\\src\\main\\res\\values-normal\\styles.xml",
+                    "source": "/Users/fisherds/Documents/Rose/ME435/github/ME435Competition-S18/GolfBallDeliveryGpsOnly/app/src/main/res/values-normal/styles.xml",
                     "from": {
                         "startLines": "2,11,22,34,27,15",
                         "startColumns": "4,4,4,4,4,4",
